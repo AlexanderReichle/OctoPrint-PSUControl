@@ -531,6 +531,11 @@ class PSUControl(octoprint.plugin.StartupPlugin,
                     GPIO.output(self._gpio_get_pin(self.onoffGPIOPin), pin_output)
                 except (RuntimeError, ValueError) as e:
                     self._logger.error(e)
+               
+                try:
+                    os.system(" cd ~/uhubctl && sudo ./uhubctl -p 2 -a 1 -l 1-1")
+                except OSError as e:
+                    self._logger.error(e)
 
             if self.sensingMethod not in ('GPIO','SYSTEM'):
                 self._noSensing_isPSUOn = True
@@ -567,6 +572,11 @@ class PSUControl(octoprint.plugin.StartupPlugin,
                 try:
                     GPIO.output(self._gpio_get_pin(self.onoffGPIOPin), pin_output)
                 except (RuntimeError, ValueError) as e:
+                    self._logger.error(e)
+                
+                try:
+                    os.system(" cd ~/uhubctl && sudo ./uhubctl -p 2 -a 0 -l 1-1")
+                except OSError as e:
                     self._logger.error(e)
 
             if self.disconnectOnPowerOff:
